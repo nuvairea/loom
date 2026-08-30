@@ -131,7 +131,7 @@ body {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(10px);
   }
 
   to {
@@ -164,12 +164,7 @@ body {
   width: 100%;
   max-width: 480px;
   padding: 1rem;
-  transition: transform 0.3s;
-}
-
-.input-wrapper:active .input-area,
-.input-wrapper:focus-within .input-area {
-  transform: scale(1.03);
+  transition: transform 0.5s ease-out;
 }
 
 .input-area {
@@ -268,7 +263,11 @@ body {
   color: var(--upload-btn-color);
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: background-color 0.2s;
+}
+
+.empty-upload-btn:hover {
+  background-color: var(--upload-btn-hover-bg);
 }
 
 .hidden {
@@ -276,13 +275,16 @@ body {
 }
 
 #clear-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   background-color: var(--upload-btn-bg);
   color: var(--upload-btn-color);
   padding: 0.8rem;
   font-size: 1rem;
   border-radius: 50%;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 #clear-btn:hover {
@@ -290,7 +292,9 @@ body {
 }
 
 #clear-btn span {
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .action {
@@ -351,7 +355,6 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
 }
 
 .loom-modal {
