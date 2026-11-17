@@ -110,7 +110,18 @@ export async function shareMoodboard(masonry, showModal) {
   const maxDimension = Math.max(masonry.offsetWidth, masonry.offsetHeight);
   const scale = Math.min(2, MAX_PIXELS / maxDimension);
 
-  const canvas = await html2canvas(masonry, { useCORS: true, scale });
+  let canvas;
+  try {
+    canvas = await html2canvas(masonry, { useCORS: true, scale });
+  } catch (err) {
+    console.error('html2canvas failed during sharing:', err);
+    showModal({
+      title: 'Share failed.',
+      message: 'Could not generate the image. Some images may be blocking access needed to share the board.',
+      actions: [{ label: 'Got it', style: 'primary' }]
+    });
+    return;
+  }
 
   return new Promise(resolve => {
     if (canvas.toBlob) {
