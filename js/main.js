@@ -102,7 +102,17 @@ async function addImageFromURL() {
   }
 
   let entry;
-  try { entry = storage.addEntry({ type: 'url', url }); } catch (e) { console.warn('persist failed', e); }
+  try {
+    entry = storage.addEntry({ type: 'url', url });
+  } catch (err) {
+    console.warn('Failed to save image:', err);
+    showModal({
+      title: 'Could not save image.',
+      message: 'Your browser could not save this image. Free up browser storage and try again.',
+      actions: [{ label: 'Got it', style: 'primary' }]
+    });
+    return;
+  }
 
   images.push(url);
   createMoodboardItem({ url, images, grid, showModal, meta: { entryId: entry?.id } });
@@ -152,13 +162,26 @@ async function addImageFromFile(file) {
   }
 
   if (thumb) {
-    const entry = storage.addEntry({ type: 'thumb', dataUrl: thumb, name: file.name, size: file.size });
+    let entry;
+    try {
+      entry = storage.addEntry({ type: 'thumb', dataUrl: thumb, name: file.name, size: file.size });
+    } catch (err) {
+      console.warn('Failed to save uploaded image:', err);
+      showModal({
+        title: 'Could not save image.',
+        message: 'Your browser could not save this image. Free up browser storage and try again.',
+        actions: [{ label: 'Got it', style: 'primary' }]
+      });
+      return;
+    }
+
     images.push(thumb);
     createMoodboardItem({ url: thumb, images, grid, showModal, revokeOnRemove: false, meta: { entryId: entry.id, isThumb: true } });
   } else {
     const blobUrl = URL.createObjectURL(file);
     images.push(blobUrl);
     createMoodboardItem({ url: blobUrl, images, grid, showModal, revokeOnRemove: true });
+    showToast('This image is only available until you leave or refresh the page.');
   }
 }
 
@@ -205,27 +228,26 @@ dom.clearBtn.addEventListener('click', () => {
         style: 'danger',
         onClick: () => {
           const items = grid.getItems();
-          const wrappers = items.map(item => item.getElement());
+          const wrappers = Array.from(dom.masonry.querySelectorAll('.moodboard-item'));
+          const blobUrls = wrappers.map(wrapper => wrapper.querySelector('img')?.src)
+            .filter(src => src?.startsWith('blob:'));
           let removedCount = 0;
+          let removalFinished = false;
 
           const finishRemoval = () => {
-            const blobUrls = wrappers.map(wrapper => wrapper.querySelector('img')?.src)
-              .filter(src => src?.startsWith('blob:'));
-
-            removedCount += 1;
-            if (removedCount !== wrappers.length) return;
+            if (removalFinished) return;
+            removalFinished = true;
 
             grid.remove(items, { removeElements: true });
+            wrappers.forEach(wrapper => wrapper.remove());
             blobUrls.forEach(url => URL.revokeObjectURL(url));
             images.length = 0;
             // clear persisted state since all items are removed
             try { storage.clearState(); } catch (err) { console.warn('clearState failed', err); }
             updateEmptyMessage(images, openFilePicker);
           };
-
           if (wrappers.length === 0) {
-            images.length = 0;
-            updateEmptyMessage(images, openFilePicker);
+            finishRemoval();
             return;
           }
 
@@ -234,9 +256,12 @@ dom.clearBtn.addEventListener('click', () => {
             wrapper.addEventListener('transitionend', function handler(event) {
               if (event.propertyName !== 'opacity') return;
               wrapper.removeEventListener('transitionend', handler);
-              finishRemoval();
+              removedCount += 1;
+              if (removedCount === wrappers.length) finishRemoval();
             });
           });
+
+          setTimeout(finishRemoval, 450);
         }
       },
       { label: 'Cancel', style: 'primary' }
