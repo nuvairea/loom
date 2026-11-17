@@ -29,7 +29,9 @@ export function addEntry(entry) {
   const state = loadState();
   const e = { id: entry.id || generateId(), ...entry };
   state.push(e);
-  saveState(state);
+  if (!saveState(state)) {
+    throw new Error('Failed to save entry to local storage.');
+  }
   return e;
 }
 
