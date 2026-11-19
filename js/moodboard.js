@@ -1,4 +1,4 @@
-import { emptyMessage, masonry } from './dom.js';
+import { emptyMessage, masonry, imageCount } from './dom.js';
 import * as storage from './storage.js';
 
 export function createMoodboardItem({
@@ -173,6 +173,7 @@ export function createMoodboardItem({
 
 export function updateEmptyMessage(images, onUploadClick) {
   const hasItems = images.length > 0;
+  imageCount.textContent = `${images.length} image${images.length === 1 ? '' : 's'}`;
 
   emptyMessage.innerHTML = `
     <span class="material-symbols-outlined empty-icon">gallery_thumbnail</span>
