@@ -11,37 +11,39 @@
     <meta name="theme-color" content="#141118" media="(prefers-color-scheme: dark)" />
   </head>
   <body>
-    <div class="toolbar">
-      <div id="clear-btn" title="Clear weave" aria-label="Clear entire moodboard">
-        <span class="material-symbols-outlined">restart_alt</span>
-      </div>
-
-      <div class="action">
-        <div id="export-btn" title="Export as PNG" aria-label="Export moodboard as image">
-          <span class="material-symbols-outlined">save_alt</span>
-          <span class="btn-text">Export</span>
-        </div>
-
-        <div id="share-btn" title="Weave & Share" aria-label="Share moodboard">
-          <span class="material-symbols-outlined">ios_share</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="input-wrapper">
-      <div class="input-area">
-        <div id="upload-btn" title="Upload Image" aria-label="Upload image from device">
-          <span class="material-symbols-outlined">add_photo_alternate</span>
-        </div>
-
-        <input type="text" id="image-url" placeholder="Image URL" autofocus />
-        <button id="add-btn">Add to weave</button>
-      </div>
-    </div>
+    <header class="topbar">
+      <span class="wordmark">Loom</span>
+      <input type="text" id="board-title" class="board-title" maxlength="40" aria-label="Board title" spellcheck="false" />
+      <span id="image-count" class="count" aria-live="polite">0 images</span>
+    </header>
 
     <div class="empty-message"></div>
 
     <div class="moodboard-masonry"></div>
+
+    <div class="input-wrapper">
+      <div class="input-area">
+        <button id="upload-btn" class="pill tonal icon" type="button" title="Upload Image" aria-label="Upload image from device">
+          <span class="material-symbols-outlined" aria-hidden="true">add_photo_alternate</span>
+        </button>
+
+        <input type="text" id="image-url" placeholder="Paste image URL" aria-label="Image URL" autofocus />
+
+        <button id="add-btn" class="pill primary" type="button" aria-label="Add image to weave">Add to weave</button>
+
+        <div class="tools">
+          <button id="export-btn" class="pill secondary icon" type="button" title="Export as PNG" aria-label="Export moodboard as image">
+            <span class="material-symbols-outlined" aria-hidden="true">save_alt</span>
+          </button>
+          <button id="share-btn" class="pill secondary icon" type="button" title="Weave &amp; Share" aria-label="Share moodboard">
+            <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
+          </button>
+          <button id="clear-btn" class="pill danger icon" type="button" title="Clear weave" aria-label="Clear entire moodboard">
+            <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations.min.js"></script>
