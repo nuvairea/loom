@@ -311,13 +311,6 @@ body {
   transform: scale(1);
 }
 
-@media (hover: none) {
-  .remove-btn {
-    opacity: 0.92;
-    transform: none;
-  }
-}
-
 .fade-in {
   animation: fadeIn 0.4s ease-in-out;
 }
