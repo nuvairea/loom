@@ -1,14 +1,14 @@
-<h1 align="center"> Loom — Weave Your Inspiration</h1>
+<h1 align="center"> Loom - Weave Your Inspiration</h1>
+
+<p align="center">
+  <a href="https://nuvairea.github.io/loom/"><b>Open Loom</b></a>
+</p>
 
 <p>
 <img src="./docs/loom.png">
 </p>
 
 <p align="center">Loom is a simple moodboard web app that lets you collect, arrange, and export images for inspiration.</p>
-
-<p align="center">
-  <a href="https://nuvairea.github.io/loom/"><b>Open Loom</b></a>
-</p>
 
 ---
 
