@@ -4,6 +4,7 @@ import { validateImage } from './validation.js';
 import { optimizeImage, ImageTooLargeError } from './optimize.js';
 import { createMoodboardItem, updateEmptyMessage } from './moodboard.js';
 import { exportMoodboard, shareMoodboard } from './export.js';
+import './header.js';
 
 const images = [];
 let restoring = true;
@@ -12,18 +13,13 @@ let lastSavedOrder = '';
 const grid = new Muuri(dom.masonry, {
   dragEnabled: true,
   layout: { fillGaps: true },
+  visibleStyles: { opacity: '1' },
+  hiddenStyles: { opacity: '0' },
   dragStartPredicate: { distance: 10, delay: 0, handle: '.item-content' },
   dragCssProps: { touchAction: 'none' }
 });
 
-grid.on('dragStart', (item) => {
-  item.getElement().style.opacity = '0.85';
-});
-
-grid.on('dragEnd', (item) => {
-  item.getElement().style.opacity = '1';
-  saveGridOrder();
-});
+grid.on('dragEnd', saveGridOrder);
 
 grid.on('layoutEnd', saveGridOrder);
 
@@ -127,7 +123,7 @@ async function addImageFromURL() {
   createMoodboardItem({ url, images, grid, showModal, meta: { entryId: entry.id } });
 
   dom.urlInput.value = '';
-  dom.urlInput.placeholder = 'Image URL';
+  dom.urlInput.placeholder = 'Paste image URL';
 }
 
 async function addImageFromFile(file) {
@@ -278,9 +274,6 @@ async function restoreState() {
     settled.push(createMoodboardItem({ url, images, grid, showModal, revokeOnRemove, meta: { entryId: entry.id } }));
   });
 
-  if (settled.length > 0) {
-    showToast(`Restored ${settled.length} image${settled.length !== 1 ? 's' : ''} from your weave`);
-  }
   updateEmptyMessage(images, openFilePicker);
 
   await Promise.all(settled);
