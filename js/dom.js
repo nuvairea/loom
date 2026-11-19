@@ -6,3 +6,5 @@ export const exportBtn = document.getElementById('export-btn');
 export const shareBtn = document.getElementById('share-btn');
 export const emptyMessage = document.querySelector('.empty-message');
 export const uploadBtn = document.getElementById('upload-btn');
+export const boardTitle = document.getElementById('board-title');
+export const imageCount = document.getElementById('image-count');
