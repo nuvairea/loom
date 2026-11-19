@@ -29,8 +29,10 @@ export function createMoodboardItem({
 
   if (meta && meta.entryId) {
     wrapper.dataset.entryId = meta.entryId;
-    if (meta.isThumb) wrapper.classList.add('needs-full');
   }
+
+  let settle;
+  const ready = new Promise(resolve => { settle = resolve; });
 
   let muuriItem = null;
 
@@ -60,7 +62,7 @@ export function createMoodboardItem({
               if (revokeOnRemove) URL.revokeObjectURL(url);
               // remove persisted entry if applicable
               const entryId = wrapper.dataset.entryId;
-              if (entryId) storage.removeEntry(entryId);
+              if (entryId) storage.removeEntry(entryId).catch(err => console.warn('Failed to remove entry:', err));
 
               updateEmptyMessage(images);
             });
@@ -81,6 +83,7 @@ export function createMoodboardItem({
     grid.refreshItems().layout();
     wrapper.classList.add('fade-in');
     updateEmptyMessage(images);
+    settle();
   };
 
   img.onerror = () => {
@@ -99,6 +102,7 @@ export function createMoodboardItem({
 
     content.appendChild(overlay);
     updateEmptyMessage(images);
+    settle();
 
     const retryBtn = overlay.querySelector('.broken-retry');
     const removeBtn = overlay.querySelector('.broken-remove');
@@ -154,7 +158,7 @@ export function createMoodboardItem({
 
               if (revokeOnRemove) URL.revokeObjectURL(url);
               const entryId = wrapper.dataset.entryId;
-              if (entryId) storage.removeEntry(entryId);
+              if (entryId) storage.removeEntry(entryId).catch(err => console.warn('Failed to remove entry:', err));
               updateEmptyMessage(images);
             }
           },
@@ -163,6 +167,8 @@ export function createMoodboardItem({
       });
     });
   };
+
+  return ready;
 }
 
 export function updateEmptyMessage(images, onUploadClick) {

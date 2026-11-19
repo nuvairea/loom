@@ -22,6 +22,8 @@
 - Clear the entire moodboard in one click
 - Export the full board as a PNG
 - Share your moodboard via supported apps
+- Your board persists across sessions in IndexedDB, with full-resolution uploads
+- Uploads are downscaled (max 2400px) and re-encoded to WebP to keep storage small
 
 ---
 
@@ -39,6 +41,7 @@ The layout and styling are heavily inspired by **Google's Material Design langua
 ## Notes
 
 - Images must be publicly accessible if added via URL
-- Images are stored temporarily in the session
+- Uploaded images are stored locally in your browser (IndexedDB), up to 20MB each
+- Clearing site data in your browser will erase your board
 
 ---

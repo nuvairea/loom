@@ -1,53 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loom — Weave Your Inspiration</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-  <meta name="theme-color" content="#e2e0f9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141118" media="(prefers-color-scheme: dark)">
-</head>
-<body>
-
-  <div class="toolbar">
-    <div id="clear-btn" title="Clear weave" aria-label="Clear entire moodboard">
-      <span class="material-symbols-outlined">restart_alt</span>
-    </div>
-
-    <div class="action">
-      <div id="export-btn" title="Export as PNG" aria-label="Export moodboard as image">
-        <span class="material-symbols-outlined">save_alt</span>
-        <span class="btn-text">Export</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loom - Weave Your Inspiration</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <meta name="theme-color" content="#e2e0f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141118" media="(prefers-color-scheme: dark)" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <div id="clear-btn" title="Clear weave" aria-label="Clear entire moodboard">
+        <span class="material-symbols-outlined">restart_alt</span>
       </div>
 
-      <div id="share-btn" title="Weave & Share" aria-label="Share moodboard">
-        <span class="material-symbols-outlined">ios_share</span>
+      <div class="action">
+        <div id="export-btn" title="Export as PNG" aria-label="Export moodboard as image">
+          <span class="material-symbols-outlined">save_alt</span>
+          <span class="btn-text">Export</span>
+        </div>
+
+        <div id="share-btn" title="Weave & Share" aria-label="Share moodboard">
+          <span class="material-symbols-outlined">ios_share</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="input-wrapper">
-    <div class="input-area">
-      <div id="upload-btn" title="Upload Image" aria-label="Upload image from device">
-        <span class="material-symbols-outlined">add_photo_alternate</span>
+    <div class="input-wrapper">
+      <div class="input-area">
+        <div id="upload-btn" title="Upload Image" aria-label="Upload image from device">
+          <span class="material-symbols-outlined">add_photo_alternate</span>
+        </div>
+
+        <input type="text" id="image-url" placeholder="Image URL" autofocus />
+        <button id="add-btn">Add to weave</button>
       </div>
-
-      <input type="text" id="image-url" placeholder="Image URL" autofocus />
-      <button id="add-btn">Add to weave</button>
     </div>
-  </div>
 
-  <div class="empty-message"></div>
+    <div class="empty-message"></div>
 
-  <div class="moodboard-masonry">
-  </div>
+    <div class="moodboard-masonry"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.9.5/muuri.min.js"></script>
-  <script type="module" src="./js/main.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/muuri/0.9.5/muuri.min.js"></script>
+    <script type="module" src="./js/main.js"></script>
+  </body>
 </html>

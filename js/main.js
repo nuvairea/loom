@@ -1,10 +1,13 @@
 import * as dom from './dom.js';
 import * as storage from './storage.js';
 import { validateImage } from './validation.js';
+import { optimizeImage, ImageTooLargeError } from './optimize.js';
 import { createMoodboardItem, updateEmptyMessage } from './moodboard.js';
 import { exportMoodboard, shareMoodboard } from './export.js';
 
 const images = [];
+let restoring = true;
+let lastSavedOrder = '';
 
 const grid = new Muuri(dom.masonry, {
   dragEnabled: true,
@@ -19,14 +22,10 @@ grid.on('dragStart', (item) => {
 
 grid.on('dragEnd', (item) => {
   item.getElement().style.opacity = '1';
-  // save layout order whenever user finishes dragging
   saveGridOrder();
 });
 
-grid.on('layoutEnd', () => {
-  // save grid order after layout completes (after items load or are repositioned)
-  saveGridOrder();
-});
+grid.on('layoutEnd', saveGridOrder);
 
 function showToast(message, duration = 2500) {
   const toast = document.createElement('div');
@@ -40,14 +39,28 @@ function showToast(message, duration = 2500) {
   }, duration);
 }
 
+function currentOrder() {
+  return grid.getItems().map(item => item.getElement().dataset.entryId).filter(Boolean);
+}
+
 function saveGridOrder() {
-  const order = grid.getItems().map(item => {
-    const el = item.getElement();
-    return el.dataset.entryId || null;
-  }).filter(Boolean);
-  if (order.length > 0) {
-    storage.updateEntryOrder(order);
-  }
+  if (restoring) return;
+  const order = currentOrder();
+  const key = order.join(',');
+  if (!order.length || key === lastSavedOrder) return;
+  lastSavedOrder = key;
+  storage.updatePositions(order).catch(err => console.warn('Failed to save order:', err));
+}
+
+function showSaveError(err) {
+  const full = err instanceof storage.StorageFullError;
+  showModal({
+    title: full ? 'Storage is full.' : 'Could not save image.',
+    message: full
+      ? 'Remove some images or free up browser storage, then try again.'
+      : 'Your browser could not save this image. Free up browser storage and try again.',
+    actions: [{ label: 'Got it', style: 'primary' }]
+  });
 }
 
 function showModal({ title, message, actions }) {
@@ -103,86 +116,46 @@ async function addImageFromURL() {
 
   let entry;
   try {
-    entry = storage.addEntry({ type: 'url', url });
+    entry = await storage.addEntry({ type: 'url', url });
   } catch (err) {
     console.warn('Failed to save image:', err);
-    showModal({
-      title: 'Could not save image.',
-      message: 'Your browser could not save this image. Free up browser storage and try again.',
-      actions: [{ label: 'Got it', style: 'primary' }]
-    });
+    showSaveError(err);
     return;
   }
 
   images.push(url);
-  createMoodboardItem({ url, images, grid, showModal, meta: { entryId: entry?.id } });
+  createMoodboardItem({ url, images, grid, showModal, meta: { entryId: entry.id } });
 
   dom.urlInput.value = '';
   dom.urlInput.placeholder = 'Image URL';
 }
 
-async function createThumbnail(file, maxDim = 400) {
-  return new Promise((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const ratio = Math.min(1, maxDim / Math.max(img.width, img.height));
-        const w = Math.round(img.width * ratio);
-        const h = Math.round(img.height * ratio);
-        const c = document.createElement('canvas');
-        c.width = w;
-        c.height = h;
-        const ctx = c.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        try {
-          const dataUrl = c.toDataURL('image/jpeg', 0.8);
-          resolve(dataUrl);
-        } catch (err) {
-          reject(err);
-        }
-      };
-      img.onerror = reject;
-      img.src = fr.result;
-    };
-    fr.onerror = reject;
-    fr.readAsDataURL(file);
-  });
-}
-
 async function addImageFromFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
 
-  // create a small thumbnail for persistence (compact hybrid)
-  let thumb;
+  let blob;
   try {
-    thumb = await createThumbnail(file, 400);
+    blob = await optimizeImage(file);
   } catch (err) {
-    console.warn('thumbnail failed, falling back to blob URL', err);
+    console.warn('Failed to process image:', err);
+    showModal(err instanceof ImageTooLargeError
+      ? { title: 'Image too large.', message: `${file.name} is over 20MB. Try a smaller image.`, actions: [{ label: 'Got it', style: 'primary' }] }
+      : { title: 'Could not read image.', message: `${file.name} could not be processed. Try a different image.`, actions: [{ label: 'Got it', style: 'primary' }] });
+    return;
   }
 
-  if (thumb) {
-    let entry;
-    try {
-      entry = storage.addEntry({ type: 'thumb', dataUrl: thumb, name: file.name, size: file.size });
-    } catch (err) {
-      console.warn('Failed to save uploaded image:', err);
-      showModal({
-        title: 'Could not save image.',
-        message: 'Your browser could not save this image. Free up browser storage and try again.',
-        actions: [{ label: 'Got it', style: 'primary' }]
-      });
-      return;
-    }
-
-    images.push(thumb);
-    createMoodboardItem({ url: thumb, images, grid, showModal, revokeOnRemove: false, meta: { entryId: entry.id, isThumb: true } });
-  } else {
-    const blobUrl = URL.createObjectURL(file);
-    images.push(blobUrl);
-    createMoodboardItem({ url: blobUrl, images, grid, showModal, revokeOnRemove: true });
-    showToast('This image is only available until you leave or refresh the page.');
+  let entry;
+  try {
+    entry = await storage.addEntry({ type: 'file', blob, name: file.name, size: blob.size });
+  } catch (err) {
+    console.warn('Failed to save uploaded image:', err);
+    showSaveError(err);
+    return;
   }
+
+  const url = URL.createObjectURL(blob);
+  images.push(url);
+  createMoodboardItem({ url, images, grid, showModal, revokeOnRemove: true, meta: { entryId: entry.id } });
 }
 
 dom.addBtn.addEventListener('click', addImageFromURL);
@@ -242,8 +215,7 @@ dom.clearBtn.addEventListener('click', () => {
             wrappers.forEach(wrapper => wrapper.remove());
             blobUrls.forEach(url => URL.revokeObjectURL(url));
             images.length = 0;
-            // clear persisted state since all items are removed
-            try { storage.clearState(); } catch (err) { console.warn('clearState failed', err); }
+            storage.clearEntries().catch(err => console.warn('clearEntries failed', err));
             updateEmptyMessage(images, openFilePicker);
           };
           if (wrappers.length === 0) {
@@ -277,40 +249,45 @@ dom.shareBtn.addEventListener('click', () =>
   shareMoodboard(dom.masonry, showModal)
 );
 
-// restore persisted state (URLs and thumbnails)
-function restoreState() {
-  const state = storage.loadState();
-  const order = storage.getEntryOrder();
-  let itemCount = 0;
+async function restoreState() {
+  let entries = [];
+  try {
+    await storage.init();
+    entries = await storage.loadEntries();
+  } catch (err) {
+    console.warn('Failed to restore state:', err);
+    showToast('Storage is unavailable. Changes will not be saved.');
+  }
 
-  if (state && state.length) {
-    // sort entries by saved order if available
-    let sorted = state;
-    if (order && order.length) {
-      sorted = state.sort((a, b) => {
-        const aIdx = order.indexOf(a.id);
-        const bIdx = order.indexOf(b.id);
-        return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx);
-      });
+  const positions = new Map(entries.map(entry => [entry.id, entry.position]));
+  const settled = [];
+
+  entries.forEach(entry => {
+    let url = null;
+    let revokeOnRemove = false;
+
+    if (entry.type === 'url' && entry.url) {
+      url = entry.url;
+    } else if (entry.type === 'file' && entry.blob) {
+      url = URL.createObjectURL(entry.blob);
+      revokeOnRemove = true;
     }
+    if (!url) return;
 
-    sorted.forEach(entry => {
-      if (entry.type === 'url' && entry.url) {
-        images.push(entry.url);
-        createMoodboardItem({ url: entry.url, images, grid, showModal, meta: { entryId: entry.id } });
-        itemCount++;
-      } else if (entry.type === 'thumb' && entry.dataUrl) {
-        images.push(entry.dataUrl);
-        createMoodboardItem({ url: entry.dataUrl, images, grid, showModal, revokeOnRemove: false, meta: { entryId: entry.id, isThumb: true } });
-        itemCount++;
-      }
-    });
+    images.push(url);
+    settled.push(createMoodboardItem({ url, images, grid, showModal, revokeOnRemove, meta: { entryId: entry.id } }));
+  });
 
-    if (itemCount > 0) {
-      showToast(`Restored ${itemCount} image${itemCount !== 1 ? 's' : ''} from your weave`);
-    }
+  if (settled.length > 0) {
+    showToast(`Restored ${settled.length} image${settled.length !== 1 ? 's' : ''} from your weave`);
   }
   updateEmptyMessage(images, openFilePicker);
+
+  await Promise.all(settled);
+  const rank = item => positions.get(item.getElement().dataset.entryId) ?? Infinity;
+  grid.sort((a, b) => rank(a) - rank(b));
+  lastSavedOrder = currentOrder().join(',');
+  restoring = false;
 }
 
 restoreState();
