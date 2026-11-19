@@ -134,7 +134,7 @@ body {
   right: 0;
   margin: 0 auto;
   bottom: max(16px, env(safe-area-inset-bottom));
-  width: min(calc(100% - 24px), 760px);
+  width: min(calc(100% - 24px), 610px);
   z-index: 50;
 }
 
@@ -184,12 +184,13 @@ body {
 }
 
 .topbar {
-  width: 100%;
+  width: calc(100% - 64px);
   max-width: 1400px;
+  margin-inline: auto;
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 28px 24px 8px;
+  padding: 28px 0 8px;
 }
 
 .wordmark {
@@ -220,9 +221,10 @@ body {
 
 .moodboard-masonry {
   position: relative;
-  width: 100%;
-  padding: 1rem;
+  width: calc(100% - 50px);
   max-width: 1400px;
+  margin-inline: auto;
+  padding: 22px 0;
 }
 
 .moodboard-item {
@@ -530,10 +532,11 @@ body {
 
 @media (max-width: 600px) {
   .topbar {
+    width: calc(100% - 32px);
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0 6px;
-    padding: max(20px, env(safe-area-inset-top)) 16px 12px;
+    padding: max(20px, env(safe-area-inset-top)) 0 12px;
   }
 
   .wordmark {
@@ -559,6 +562,11 @@ body {
   .count::before {
     content: '\00b7';
     margin-right: 6px;
+  }
+
+  .moodboard-masonry {
+    width: calc(100% - 22px);
+    padding-inline: 0;
   }
 
   .moodboard-item {
