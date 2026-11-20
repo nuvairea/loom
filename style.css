@@ -58,6 +58,16 @@ body {
   align-items: center;
   padding-bottom: 120px;
   position: relative;
+
+  &::after {
+    content: '';
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 10;
+    height: 120px;
+    background: linear-gradient(to top, var(--bg) 25%, transparent);
+    pointer-events: none;
+  }
 }
 
 .material-symbols-outlined {
@@ -309,6 +319,13 @@ body {
 .remove-btn:focus-visible {
   opacity: 1;
   transform: scale(1);
+}
+
+@media (hover: none) {
+  .remove-btn {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .fade-in {
@@ -585,14 +602,22 @@ body {
     top: max(12px, env(safe-area-inset-top));
     right: 12px;
     z-index: 50;
+    gap: 8px;
   }
 
   .tools::before {
     display: none;
   }
 
+  #export-btn,
+  #share-btn {
+    --r: 24px;
+    background: var(--surface-high);
+    color: var(--accent-text);
+  }
+
   #clear-btn {
-    margin-left: 8px;
+    margin-left: 0;
   }
 }
 
