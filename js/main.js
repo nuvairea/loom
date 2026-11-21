@@ -9,14 +9,38 @@ import './header.js';
 const images = [];
 let restoring = true;
 let lastSavedOrder = '';
+let touchArmed = false;
+let touchArmTimer = 0;
 
 const grid = new Muuri(dom.masonry, {
   dragEnabled: true,
   layout: { fillGaps: true },
   visibleStyles: { opacity: '1' },
   hiddenStyles: { opacity: '0' },
-  dragStartPredicate: { distance: 10, delay: 0, handle: '.item-content' },
-  dragCssProps: { touchAction: 'none' }
+  dragStartPredicate: (item, e) => {
+    if (e.pointerType !== 'touch') {
+      return Muuri.ItemDrag.defaultStartPredicate(item, e, { distance: 10, delay: 0 });
+    }
+    // Touch: swipes scroll the page, a 250ms press arms the drag
+    if (e.isFirst) {
+      touchArmed = false;
+      clearTimeout(touchArmTimer);
+      touchArmTimer = setTimeout(() => { touchArmed = true; }, 250);
+    }
+    if (e.isFinal) {
+      clearTimeout(touchArmTimer);
+      touchArmed = false;
+      return false;
+    }
+    // Non-cancelable events mean the browser already took over for scrolling
+    if (e.srcEvent && e.srcEvent.cancelable === false) {
+      clearTimeout(touchArmTimer);
+      touchArmed = false;
+      return false;
+    }
+    return touchArmed ? true : undefined;
+  },
+  dragCssProps: { touchAction: 'pan-y' }
 });
 
 grid.on('dragEnd', saveGridOrder);
