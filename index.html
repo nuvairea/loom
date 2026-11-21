@@ -6,7 +6,7 @@
     <title>Loom - Weave Your Inspiration</title>
     <link rel="stylesheet" href="style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700" rel="stylesheet" />
     <meta name="theme-color" content="#e2e0f9" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#141118" media="(prefers-color-scheme: dark)" />
   </head>
@@ -27,21 +27,20 @@
           <span class="material-symbols-outlined" aria-hidden="true">add_photo_alternate</span>
         </button>
 
-        <input type="text" id="image-url" placeholder="Paste image URL" aria-label="Image URL" autofocus />
+        <input type="text" id="image-url" placeholder="Paste image URL" aria-label="Image URL" />
 
         <button id="add-btn" class="pill primary" type="button" aria-label="Add image to weave">Add to weave</button>
-
-        <div class="tools">
-          <button id="export-btn" class="pill secondary icon" type="button" title="Export as PNG" aria-label="Export moodboard as image">
-            <span class="material-symbols-outlined" aria-hidden="true">save_alt</span>
-          </button>
-          <button id="share-btn" class="pill secondary icon" type="button" title="Weave &amp; Share" aria-label="Share moodboard">
-            <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
-          </button>
-          <button id="clear-btn" class="pill danger icon" type="button" title="Clear weave" aria-label="Clear entire moodboard">
-            <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
-          </button>
-        </div>
+      </div>
+      <div class="tools">
+        <button id="export-btn" class="pill secondary icon" type="button" title="Export as PNG" aria-label="Export moodboard as image">
+          <span class="material-symbols-outlined" aria-hidden="true">save_alt</span>
+        </button>
+        <button id="share-btn" class="pill secondary icon" type="button" title="Weave &amp; Share" aria-label="Share moodboard">
+          <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
+        </button>
+        <button id="clear-btn" class="pill danger icon" type="button" title="Clear weave" aria-label="Clear entire moodboard">
+          <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+        </button>
       </div>
     </div>
 
