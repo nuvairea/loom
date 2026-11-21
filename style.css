@@ -58,6 +58,16 @@ body {
   align-items: center;
   padding-bottom: 120px;
   position: relative;
+
+  &::after {
+    content: '';
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 10;
+    height: 120px;
+    background: linear-gradient(to top, var(--bg) 25%, transparent);
+    pointer-events: none;
+  }
 }
 
 .material-symbols-outlined {
@@ -256,7 +266,7 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 24px;
-  touch-action: none;
+  touch-action: pan-y;
   box-shadow: 0 2px 8px var(--tile-shadow);
   transition:
     transform 0.4s var(--spring),
@@ -296,6 +306,7 @@ body {
   cursor: pointer;
   opacity: 0;
   transform: scale(0.6);
+  pointer-events: none;
   transition:
     opacity 0.2s,
     transform 0.35s var(--spring);
@@ -309,7 +320,9 @@ body {
 .remove-btn:focus-visible {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
 }
+
 
 .fade-in {
   animation: fadeIn 0.4s ease-in-out;
@@ -525,11 +538,25 @@ body {
 
 @media (max-width: 600px) {
   .topbar {
-    width: calc(100% - 32px);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    width: 100%;
+    margin-inline: 0;
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0 6px;
-    padding: max(20px, env(safe-area-inset-top)) 0 12px;
+    padding: max(20px, env(safe-area-inset-top)) 16px 12px;
+    background: var(--bg);
+  }
+
+  .topbar::after {
+    content: '';
+    position: absolute;
+    inset: 100% 0 auto;
+    height: 10px;
+    background: linear-gradient(to bottom, var(--bg), color-mix(in srgb, var(--bg) 0%, transparent));
+    pointer-events: none;
   }
 
   .wordmark {
@@ -570,9 +597,20 @@ body {
     margin-top: 12vh;
   }
 
+  .input-area {
+    height: 64px;
+    padding: 0 0 0 8px;
+    gap: 6px;
+    overflow: hidden;
+  }
+
   .pill.primary {
-    height: 48px;
-    padding: 0 20px;
+    height: 100%;
+    padding: 0 24px;
+  }
+
+  .pill.primary:not(:active) {
+    --r: 32px;
   }
 
   .pill.icon {
@@ -585,14 +623,22 @@ body {
     top: max(12px, env(safe-area-inset-top));
     right: 12px;
     z-index: 50;
+    gap: 8px;
   }
 
   .tools::before {
     display: none;
   }
 
+  #export-btn,
+  #share-btn {
+    --r: 24px;
+    background: var(--surface-high);
+    color: var(--accent-text);
+  }
+
   #clear-btn {
-    margin-left: 8px;
+    margin-left: 0;
   }
 }
 
