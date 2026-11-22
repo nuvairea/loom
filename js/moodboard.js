@@ -78,6 +78,10 @@ export function createMoodboardItem({
   masonry.appendChild(wrapper);
 
   img.onload = () => {
+    if (!wrapper.isConnected) {
+      settle();
+      return;
+    }
     grid.add(wrapper);
     muuriItem = grid.getItem(wrapper);
     grid.refreshItems().layout();
@@ -87,6 +91,10 @@ export function createMoodboardItem({
   };
 
   img.onerror = () => {
+    if (!wrapper.isConnected) {
+      settle();
+      return;
+    }
     console.error("Image failed to load:", url);
     wrapper.classList.add('broken-image');
 
