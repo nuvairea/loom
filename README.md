@@ -23,9 +23,9 @@
 
 Loom turns your collected images into a single visual board. Add images by pasting a direct URL or uploading files from your device. URLs are checked before they enter the board, while uploaded images are downscaled to a maximum of 2400 pixels and re-encoded as WebP to keep storage small.
 
-Arrange the board by dragging images into place. Loom maintains an animated masonry layout and provides confirmation before removing an individual image or clearing the entire board. You can edit the board title and track your image count as the collection changes.
+Arrange the board by dragging images into place. Loom maintains an animated masonry layout and provides confirmation before removing an individual image or clearing the entire board. Keep as many boards as you like and switch, rename, duplicate, or delete them from the title at the top, while the image count tracks the open board.
 
-Your board is saved locally in IndexedDB, with automatic migration from the older localStorage format. Export the finished board as a PNG, or use the Web Share API where it is supported. Loom adapts to light and dark system themes and uses a responsive floating control dock on different screen sizes.
+Your boards are saved locally in IndexedDB, with automatic migration from earlier versions. Export the finished board as a PNG, or use the Web Share API where it is supported. Loom adapts to light and dark system themes and uses a responsive floating control dock on different screen sizes.
 
 ## Tech Stack
 
@@ -55,11 +55,11 @@ loom/
 └── js/
     ├── main.js        app wiring, grid setup, restore flow
     ├── moodboard.js   creates and removes board items
-    ├── storage.js     IndexedDB persistence and legacy migration
+    ├── storage.js     IndexedDB persistence, boards, and migrations
     ├── optimize.js    image downscaling and WebP encoding
     ├── export.js      PNG export and sharing
     ├── validation.js  image URL validation
-    ├── header.js      board title persistence
+    ├── boards.js      board switcher, rename, duplicate, delete
     └── dom.js         shared DOM references
 ```
 
@@ -71,5 +71,4 @@ loom/
 
 ## Roadmap
 
-- Multiple named boards
 - Installable as a PWA
