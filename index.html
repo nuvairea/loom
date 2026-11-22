@@ -13,7 +13,11 @@
   <body>
     <header class="topbar">
       <span class="wordmark">Loom</span>
-      <input type="text" id="board-title" class="board-title" maxlength="40" aria-label="Board title" spellcheck="false" />
+      <button id="board-switch" class="board-chip" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Switch board">
+        <span id="board-name">My weave</span>
+        <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+      </button>
+      <input type="text" id="board-title" class="board-title hidden" maxlength="40" aria-label="Board title" spellcheck="false" />
       <span id="image-count" class="count" aria-live="polite">0 images</span>
     </header>
 
