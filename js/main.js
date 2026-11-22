@@ -4,13 +4,16 @@ import { validateImage } from './validation.js';
 import { optimizeImage, ImageTooLargeError } from './optimize.js';
 import { createMoodboardItem, updateEmptyMessage } from './moodboard.js';
 import { exportMoodboard, shareMoodboard } from './export.js';
-import './header.js';
+import { initBoards, setBoardName } from './boards.js';
 
 const images = [];
 let restoring = true;
 let lastSavedOrder = '';
 let touchArmed = false;
 let touchArmTimer = 0;
+let currentBoardId = null;
+let loadEpoch = 0;
+const BOARD_KEY = 'loom.board.v1';
 
 const grid = new Muuri(dom.masonry, {
   dragEnabled: true,
@@ -21,7 +24,7 @@ const grid = new Muuri(dom.masonry, {
     if (e.pointerType !== 'touch') {
       return Muuri.ItemDrag.defaultStartPredicate(item, e, { distance: 10, delay: 0 });
     }
-    // Touch: swipes scroll the page, a 250ms press arms the drag
+
     if (e.isFirst) {
       touchArmed = false;
       clearTimeout(touchArmTimer);
@@ -32,7 +35,7 @@ const grid = new Muuri(dom.masonry, {
       touchArmed = false;
       return false;
     }
-    // Non-cancelable events mean the browser already took over for scrolling
+
     if (e.srcEvent && e.srcEvent.cancelable === false) {
       clearTimeout(touchArmTimer);
       touchArmed = false;
@@ -126,6 +129,7 @@ function showModal({ title, message, actions }) {
 async function addImageFromURL() {
   const url = dom.urlInput.value.trim();
   if (!url) return;
+  const boardId = currentBoardId;
 
   const isValid = await validateImage(url);
   if (!isValid) {
@@ -136,12 +140,14 @@ async function addImageFromURL() {
 
   let entry;
   try {
-    entry = await storage.addEntry({ type: 'url', url });
+    entry = await storage.addEntry({ boardId, type: 'url', url });
   } catch (err) {
     console.warn('Failed to save image:', err);
     showSaveError(err);
     return;
   }
+
+  if (boardId !== currentBoardId) return;
 
   images.push(url);
   createMoodboardItem({ url, images, grid, showModal, meta: { entryId: entry.id } });
@@ -152,6 +158,7 @@ async function addImageFromURL() {
 
 async function addImageFromFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
+  const boardId = currentBoardId;
 
   let blob;
   try {
@@ -166,12 +173,14 @@ async function addImageFromFile(file) {
 
   let entry;
   try {
-    entry = await storage.addEntry({ type: 'file', blob, name: file.name, size: blob.size });
+    entry = await storage.addEntry({ boardId, type: 'file', blob, name: file.name, size: blob.size });
   } catch (err) {
     console.warn('Failed to save uploaded image:', err);
     showSaveError(err);
     return;
   }
+
+  if (boardId !== currentBoardId) return;
 
   const url = URL.createObjectURL(blob);
   images.push(url);
@@ -235,7 +244,7 @@ dom.clearBtn.addEventListener('click', () => {
             wrappers.forEach(wrapper => wrapper.remove());
             blobUrls.forEach(url => URL.revokeObjectURL(url));
             images.length = 0;
-            storage.clearEntries().catch(err => console.warn('clearEntries failed', err));
+            storage.clearEntries(currentBoardId).catch(err => console.warn('clearEntries failed', err));
             updateEmptyMessage(images, openFilePicker);
           };
           if (wrappers.length === 0) {
@@ -269,15 +278,45 @@ dom.shareBtn.addEventListener('click', () =>
   shareMoodboard(dom.masonry, showModal)
 );
 
-async function restoreState() {
+function clearGrid() {
+  const blobUrls = Array.from(dom.masonry.querySelectorAll('.moodboard-item img'))
+    .map(img => img.src)
+    .filter(src => src.startsWith('blob:'));
+
+  grid.remove(grid.getItems(), { removeElements: true });
+  dom.masonry.querySelectorAll('.moodboard-item').forEach(wrapper => wrapper.remove());
+  blobUrls.forEach(url => URL.revokeObjectURL(url));
+  images.length = 0;
+  lastSavedOrder = '';
+}
+
+function rememberBoard(id) {
+  try {
+    localStorage.setItem(BOARD_KEY, id);
+  } catch (err) {
+    console.warn('Failed to remember board:', err);
+  }
+  history.replaceState(null, '', `#${id}`);
+}
+
+async function loadBoard(id) {
+  const epoch = ++loadEpoch;
+  restoring = true;
+  clearGrid();
+  currentBoardId = id;
+  rememberBoard(id);
+
+  let board = null;
   let entries = [];
   try {
-    await storage.init();
-    entries = await storage.loadEntries();
+    [board, entries] = await Promise.all([storage.getBoard(id), storage.loadEntries(id)]);
   } catch (err) {
-    console.warn('Failed to restore state:', err);
-    showToast('Storage is unavailable. Changes will not be saved.');
+    console.warn('Failed to load board:', err);
+    showToast('Could not load this board.');
   }
+  if (epoch !== loadEpoch) return;
+
+  setBoardName(board?.title || 'My weave');
 
   const positions = new Map(entries.map(entry => [entry.id, entry.position]));
   const settled = [];
@@ -301,10 +340,46 @@ async function restoreState() {
   updateEmptyMessage(images, openFilePicker);
 
   await Promise.all(settled);
+  if (epoch !== loadEpoch) return;
+
   const rank = item => positions.get(item.getElement().dataset.entryId) ?? Infinity;
   grid.sort((a, b) => rank(a) - rank(b));
   lastSavedOrder = currentOrder().join(',');
   restoring = false;
 }
+
+async function restoreState() {
+  let boardId = null;
+  try {
+    await storage.init();
+    const boards = await storage.listBoards();
+    let wanted = location.hash.slice(1);
+    if (!wanted) {
+      try {
+        wanted = localStorage.getItem(BOARD_KEY) || '';
+      } catch {
+        wanted = '';
+      }
+    }
+    boardId = (boards.find(board => board.id === wanted) || boards[0])?.id ?? null;
+  } catch (err) {
+    console.warn('Failed to restore state:', err);
+    showToast('Storage is unavailable. Changes will not be saved.');
+  }
+
+  if (boardId) {
+    await loadBoard(boardId);
+  } else {
+    updateEmptyMessage(images, openFilePicker);
+    restoring = false;
+  }
+}
+
+initBoards({
+  getCurrentId: () => currentBoardId,
+  switchTo: loadBoard,
+  showModal,
+  showToast
+});
 
 restoreState();
