@@ -74,7 +74,6 @@ body {
   font-size: 22px;
   user-select: none;
   vertical-align: middle;
-  font-variation-settings: 'wght' 250;
 }
 
 .pill {
@@ -619,7 +618,7 @@ body {
     background: var(--surface-high);
     border-radius: 999px;
     box-shadow: 0 10px 30px var(--shadow);
-    transform: scale(0.88);
+    transform: scale(0.93);
     transform-origin: center bottom;
     transition: transform 0.4s var(--spring);
   }
