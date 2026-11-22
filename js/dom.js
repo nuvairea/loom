@@ -8,3 +8,5 @@ export const emptyMessage = document.querySelector('.empty-message');
 export const uploadBtn = document.getElementById('upload-btn');
 export const boardTitle = document.getElementById('board-title');
 export const imageCount = document.getElementById('image-count');
+export const boardSwitch = document.getElementById('board-switch');
+export const boardName = document.getElementById('board-name');
