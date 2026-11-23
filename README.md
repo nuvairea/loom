@@ -17,7 +17,6 @@
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Limitations](#limitations)
-- [Roadmap](#roadmap)
 
 ## How It Works
 
@@ -68,7 +67,4 @@ loom/
 - Images added by URL must be publicly accessible, and the host must allow cross-origin requests
 - Uploads are limited to 20MB each
 - Boards live in your browser. Clearing site data erases them, and they do not sync across devices
-
-## Roadmap
-
-- Installable as a PWA
+  
