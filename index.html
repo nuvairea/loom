@@ -36,7 +36,13 @@
 
     <div id="storage-meter" class="meter hidden" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100">
       <span class="meter-title">Storage</span>
-      <span class="meter-track"><span class="meter-fill"></span></span>
+      <span class="meter-track">
+        <svg class="meter-svg" aria-hidden="true">
+          <path class="meter-active" />
+          <path class="meter-rest" />
+          <circle class="meter-dot" />
+        </svg>
+      </span>
       <span class="meter-label">0% used</span>
     </div>
 
