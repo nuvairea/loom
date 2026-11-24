@@ -1,5 +1,12 @@
 import { emptyMessage, masonry, imageCount } from './dom.js';
+import { refreshStorageMeter } from './meter.js';
 import * as storage from './storage.js';
+
+function shapeFor(key) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  return hash % 6;
+}
 
 export function createMoodboardItem({
   url,
@@ -30,6 +37,9 @@ export function createMoodboardItem({
   if (meta && meta.entryId) {
     wrapper.dataset.entryId = meta.entryId;
   }
+
+  // stable per tile: entry id when persisted, url otherwise
+  wrapper.dataset.shape = shapeFor((meta && meta.entryId) || url);
 
   let settle;
   const ready = new Promise(resolve => { settle = resolve; });
@@ -81,6 +91,10 @@ export function createMoodboardItem({
     if (!wrapper.isConnected) {
       settle();
       return;
+    }
+    // pill only on wide images and only for tiles that would otherwise be plain
+    if (wrapper.dataset.shape === '0' && img.naturalWidth / img.naturalHeight >= 1.6) {
+      wrapper.dataset.shape = 'pill';
     }
     grid.add(wrapper);
     muuriItem = grid.getItem(wrapper);
@@ -181,7 +195,8 @@ export function createMoodboardItem({
 
 export function updateEmptyMessage(images, onUploadClick) {
   const hasItems = images.length > 0;
-  imageCount.textContent = `${images.length} image${images.length === 1 ? '' : 's'}`;
+  imageCount.innerHTML = `<span class="count-num">${images.length}</span><span class="count-label">image${images.length === 1 ? '' : 's'}</span>`;
+  refreshStorageMeter();
 
   emptyMessage.innerHTML = `
     <span class="material-symbols-outlined empty-icon">gallery_thumbnail</span>
