@@ -4,17 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loom - Weave Your Inspiration</title>
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/dock.css" />
+    <link rel="stylesheet" href="css/topbar.css" />
+    <link rel="stylesheet" href="css/boards.css" />
+    <link rel="stylesheet" href="css/meter.css" />
+    <link rel="stylesheet" href="css/tiles.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/overlays.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@1..144,1..1000&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="icon" href="favicon.ico" sizes="32x32" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#e2e0f9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#141118" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#1d1b20" media="(prefers-color-scheme: dark)" />
   </head>
   <body>
     <header class="topbar">
-      <span class="wordmark">Loom</span>
+      <span class="wordmark">
+        <img class="logo-mark" src="favicon.svg" alt="" width="40" height="40" />
+        Loom
+      </span>
       <button id="board-switch" class="board-chip" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Switch board">
         <span id="board-name">My weave</span>
         <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
@@ -22,6 +33,12 @@
       <input type="text" id="board-title" class="board-title hidden" maxlength="40" aria-label="Board title" spellcheck="false" />
       <span id="image-count" class="count" aria-live="polite">0 images</span>
     </header>
+
+    <div id="storage-meter" class="meter hidden" role="progressbar" aria-label="Storage used" aria-valuemin="0" aria-valuemax="100">
+      <span class="meter-title">Storage</span>
+      <span class="meter-track"><span class="meter-fill"></span></span>
+      <span class="meter-label">0% used</span>
+    </div>
 
     <div class="empty-message"></div>
 
@@ -40,12 +57,13 @@
       <div class="tools">
         <button id="export-btn" class="pill secondary icon" type="button" title="Export as PNG" aria-label="Export moodboard as image">
           <span class="material-symbols-outlined" aria-hidden="true">save_alt</span>
+          <span class="btn-label">Export</span>
         </button>
         <button id="share-btn" class="pill secondary icon" type="button" title="Weave &amp; Share" aria-label="Share moodboard">
           <span class="material-symbols-outlined" aria-hidden="true">ios_share</span>
         </button>
         <button id="clear-btn" class="pill danger icon" type="button" title="Clear weave" aria-label="Clear entire moodboard">
-          <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+          <span class="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
         </button>
       </div>
     </div>
