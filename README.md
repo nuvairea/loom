@@ -4,10 +4,9 @@
 
 <p align="center">
   <a href="https://nuvairea.github.io/loom/"><img alt="Live demo" src="https://img.shields.io/badge/demo-live-6b4fd8?style=flat-square&logo=githubpages&logoColor=white" /></a>
-  <img alt="Design: Material 3 Expressive" src="https://img.shields.io/badge/design-Material_3_Expressive-6b4fd8?style=flat-square&logo=materialdesign&logoColor=white" />
   <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-ES_modules-e8f56a?style=flat-square&logo=javascript&logoColor=e8f56a&labelColor=1c1245" />
   <img alt="Storage: IndexedDB" src="https://img.shields.io/badge/storage-IndexedDB-e8f56a?style=flat-square&labelColor=1c1245&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZThmNTZhIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+PGVsbGlwc2UgY3g9IjEyIiBjeT0iNSIgcng9IjgiIHJ5PSIzIi8+PHBhdGggZD0iTTQgNXYxNGMwIDEuNyAzLjYgMyA4IDNzOC0xLjMgOC0zVjVNNCAxMmMwIDEuNyAzLjYgMyA4IDNzOC0xLjMgOC0zIi8+PC9zdmc+" />
-  <a href="https://github.com/nuvairea/loom/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/nuvairea/loom?style=flat-square&labelColor=1c1245&color=6b4fd8&logo=github&logoColor=white" /></a>
+   <img alt="Design: Material 3 Expressive" src="https://img.shields.io/badge/design-Material_3_Expressive-6b4fd8?style=flat-square&logo=materialdesign&logoColor=white" />
 </p>
 
 <p align="center">
