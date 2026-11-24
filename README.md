@@ -1,6 +1,6 @@
 <h1 align="center">Loom</h1>
 
-<p align="center">Weave your inspiration. A simple moodboard app to collect, arrange, and export images.</p>
+<p align="center">Weave your inspiration.</p>
 
 <p align="center">
   <a href="https://nuvairea.github.io/loom/"><b>Live demo</b></a>
@@ -49,7 +49,16 @@ All libraries load from a CDN, so an internet connection is required.
 ```
 loom/
 ├── index.html
-├── style.css
+├── css/               load order matters, see index.html
+│   ├── tokens.css     colors, dark mode
+│   ├── base.css       reset, body, pill buttons
+│   ├── dock.css       bottom bar and tools
+│   ├── topbar.css     wordmark, board chip, count
+│   ├── boards.css     board switcher panel and menu
+│   ├── meter.css      wavy storage meter
+│   ├── tiles.css      masonry, items, empty state
+│   ├── utilities.css  .hidden, reduced motion
+│   └── overlays.css   modals, toast, broken image overlay
 ├── docs/              screenshots
 └── js/
     ├── main.js        app wiring, grid setup, restore flow
@@ -67,4 +76,3 @@ loom/
 - Images added by URL must be publicly accessible, and the host must allow cross-origin requests
 - Uploads are limited to 20MB each
 - Boards live in your browser. Clearing site data erases them, and they do not sync across devices
-  
