@@ -1,9 +1,3 @@
-@property --pct {
-  syntax: '<percentage>';
-  inherits: true;
-  initial-value: 0%;
-}
-
 .meter {
   width: calc(100% - 64px);
   max-width: 1400px;
@@ -17,29 +11,37 @@
 }
 
 .meter-track {
-  position: relative;
-  flex: 0 1 460px;
-  height: 14px;
-  background: linear-gradient(var(--divider), var(--divider)) right center / 100% 4px no-repeat;
-  border-radius: 999px;
+  flex: 1;
+  min-width: 0;
+  max-width: 520px;
+  height: 12px;
 }
 
-.meter-fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--pct);
-  background: var(--chip-active);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 7 Q7 0 14 7 T28 7' fill='none' stroke='black' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50% / 28px 14px;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 7 Q7 0 14 7 T28 7' fill='none' stroke='black' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50% / 28px 14px;
-  animation: wave 1.4s linear infinite;
-  transition: width 0.6s var(--spring);
+.meter-svg {
+  display: block;
+  width: 100%;
+  height: 12px;
+  overflow: visible;
 }
 
-@keyframes wave {
-  to {
-    -webkit-mask-position: -28px 50%;
-    mask-position: -28px 50%;
-  }
+.meter-active,
+.meter-rest {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.meter-active {
+  stroke: var(--chip-active);
+}
+
+.meter-rest {
+  stroke: var(--divider);
+}
+
+.meter-dot {
+  fill: var(--chip-active);
 }
 
 @media (max-width: 600px) {
@@ -51,6 +53,6 @@
   }
 
   .meter-track {
-    flex: 1;
+    max-width: none;
   }
 }
