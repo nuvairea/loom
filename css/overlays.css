@@ -1,0 +1,129 @@
+.loom-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loom-modal {
+  background: var(--bg);
+  border-radius: 28px;
+  padding: 28px 24px 20px;
+  max-width: 350px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  animation: fadeIn 0.2s ease;
+}
+
+.loom-modal-title {
+  font-size: 1.07rem;
+  font-weight: 600;
+  color: var(--accent-text);
+}
+
+.loom-modal-message {
+  font-size: 0.875rem;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.loom-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loom-modal-btn {
+  padding: 0.9rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 0.875rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition:
+    transform 0.35s var(--spring),
+    filter 0.2s;
+}
+
+.loom-modal-btn:hover {
+  filter: brightness(1.07);
+}
+
+.loom-modal-btn:active {
+  transform: scale(0.95);
+}
+
+.loom-modal-btn.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.loom-modal-btn.danger {
+  background: var(--error-container);
+  color: var(--on-error-container);
+}
+
+.loom-modal-btn.ghost {
+  background: transparent;
+  color: var(--on-surface-variant);
+}
+
+.broken-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border-radius: var(--tile-r, 24px);
+}
+
+.broken-overlay .broken-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.broken-overlay .broken-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.broken-overlay .loom-modal-btn.primary {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.moodboard-item.broken-image img {
+  filter: grayscale(80%) contrast(0.9);
+  opacity: 0.9;
+}
+
+.loom-toast {
+  position: fixed;
+  bottom: 104px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+.loom-toast.show {
+  transform: translateX(-50%) translateY(0);
+}

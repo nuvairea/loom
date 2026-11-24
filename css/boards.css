@@ -1,0 +1,251 @@
+.board-scrim,
+.board-menu-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: transparent;
+}
+
+.board-menu-scrim {
+  z-index: 62;
+}
+
+.board-panel {
+  position: fixed;
+  z-index: 61;
+  width: 340px;
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 28px;
+  background: var(--surface-high);
+  box-shadow: 0 18px 44px var(--shadow);
+  outline: none;
+  animation: panelIn 0.3s var(--spring);
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+.board-handle,
+.board-panel-title {
+  display: none;
+}
+
+.board-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.board-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+.board-row:hover,
+.board-row:focus-visible {
+  background: var(--row-hover);
+}
+
+.board-row.active {
+  background: var(--secondary-container);
+}
+
+.board-row:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+}
+
+.board-mos {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr;
+  gap: 2px;
+  background: var(--divider);
+}
+
+.board-mos i {
+  background: var(--chip-bg) center / cover no-repeat;
+}
+
+.board-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.board-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.board-meta {
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--accent-text);
+}
+
+.board-check {
+  flex: none;
+  color: var(--accent-text);
+}
+
+.board-more {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--accent-text);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.board-more:hover,
+.board-more:focus-visible {
+  background: var(--row-hover);
+}
+
+.board-new {
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  gap: 8px;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.board-menu {
+  position: fixed;
+  z-index: 63;
+  width: 210px;
+  padding: 6px;
+  border-radius: 20px;
+  background: var(--menu-bg);
+  box-shadow: 0 12px 32px var(--shadow);
+  animation: panelIn 0.25s var(--spring);
+}
+
+.board-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--on-surface);
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.board-menu button:hover,
+.board-menu button:focus-visible {
+  background: var(--row-hover);
+}
+
+.board-menu button.danger {
+  color: var(--delete-text);
+}
+
+.board-menu button.danger:hover,
+.board-menu button.danger:focus-visible {
+  background: var(--error-container);
+}
+
+@media (max-width: 600px) {
+  .board-scrim {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .board-panel {
+    left: 0 !important;
+    right: 0;
+    top: auto !important;
+    bottom: 0;
+    width: auto;
+    max-height: 80vh;
+    padding: 12px 12px max(28px, env(safe-area-inset-bottom));
+    border-radius: 28px 28px 0 0;
+    animation: sheetIn 0.35s var(--spring);
+  }
+
+  .board-handle {
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin: 0 auto 14px;
+    border-radius: 2px;
+    background: var(--accent-text);
+    opacity: 0.4;
+  }
+
+  .board-panel-title {
+    display: block;
+    padding: 0 10px 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--on-surface);
+  }
+
+  .board-row {
+    padding: 8px 6px 8px 10px;
+    border-radius: 22px;
+  }
+
+  .board-mos {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+  }
+
+  .board-name {
+    font-size: 0.9375rem;
+  }
+
+  .board-more {
+    width: 44px;
+    height: 44px;
+  }
+
+  .board-new {
+    height: 56px;
+    margin-top: 12px;
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    font-size: 0.9375rem;
+  }
+}

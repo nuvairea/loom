@@ -1,0 +1,151 @@
+#export-btn {
+  --r: 26px 6px 6px 26px;
+  width: auto;
+  padding: 0 20px 0 16px;
+  gap: 8px;
+}
+
+#share-btn {
+  --r: 6px 26px 26px 6px;
+}
+
+.input-wrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(calc(100% - 24px), 610px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--dock-bg);
+  padding: 8px;
+  border-radius: 999px;
+  box-shadow: 0 10px 34px var(--shadow);
+}
+
+.input-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#image-url {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--dock-text);
+  font-size: 1rem;
+  padding: 0 8px;
+  border-radius: 12px;
+}
+
+::placeholder {
+  color: var(--dock-hint);
+  font-size: 0.875rem;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tools::before {
+  content: '';
+  width: 1px;
+  height: 28px;
+  background: var(--dock-divider);
+  margin: 0 8px 0 4px;
+}
+
+#clear-btn {
+  margin-left: 6px;
+  background: var(--clear-bg);
+  color: var(--on-clear);
+}
+
+.input-area .pill.tonal {
+  background: var(--dock-btn);
+  color: var(--on-dock-btn);
+}
+
+#add-btn {
+  background: var(--cta);
+  color: var(--on-cta);
+}
+
+@media (max-width: 600px) {
+  .input-wrapper {
+    display: block;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .input-area {
+    height: 58px;
+    padding: 0 0 0 6px;
+    gap: 6px;
+    overflow: hidden;
+    background: var(--dock-bg);
+    border-radius: 999px;
+    box-shadow: 0 10px 30px var(--shadow);
+    transform: scale(0.93);
+    transform-origin: center bottom;
+    transition: transform 0.4s var(--spring);
+  }
+
+  .input-area:focus-within {
+    transform: scale(1);
+  }
+
+  .pill.primary {
+    height: 100%;
+    padding: 0 24px;
+  }
+
+  .pill.primary:not(:active) {
+    --r: 32px;
+  }
+
+  .pill.icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .tools {
+    position: fixed;
+    top: calc(max(16px, env(safe-area-inset-top)) + 44px);
+    right: 16px;
+    z-index: 50;
+    gap: 2px;
+  }
+
+  .tools::before {
+    display: none;
+  }
+
+  #export-btn,
+  #share-btn,
+  #clear-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  .btn-label {
+    display: none;
+  }
+
+  #clear-btn {
+    margin-left: 6px;
+  }
+}

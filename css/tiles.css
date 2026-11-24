@@ -1,0 +1,210 @@
+.moodboard-masonry {
+  position: relative;
+  width: calc(100% - 50px);
+  max-width: 1400px;
+  margin-inline: auto;
+  padding: 22px 0;
+}
+
+.moodboard-item {
+  display: block;
+  position: absolute;
+  width: calc(25% - 12px);
+  margin: 6px;
+  z-index: 1;
+}
+
+.moodboard-item:hover {
+  z-index: 2;
+}
+
+.moodboard-item[data-shape='1'] {
+  --tile-r: 24px 24px 24px 8px;
+}
+
+.moodboard-item[data-shape='2'] {
+  --tile-r: 8px 24px 24px 24px;
+}
+
+.moodboard-item[data-shape='3'] {
+  --tile-r: 24px 24px 8px 24px;
+}
+
+.moodboard-item[data-shape='4'] {
+  --tile-r: 24px 8px 24px 24px;
+}
+
+.moodboard-item[data-shape='5'] {
+  --tile-r: 28px 8px 28px 8px;
+}
+
+.moodboard-item[data-shape='pill'] {
+  --tile-r: 999px;
+}
+
+.moodboard-item.muuri-item-dragging {
+  z-index: 3;
+  cursor: grabbing;
+}
+
+.moodboard-item.muuri-item-releasing {
+  z-index: 2;
+}
+
+.moodboard-item.muuri-item-hidden {
+  z-index: 0;
+}
+
+.item-content {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--tile-r, 24px);
+  touch-action: pan-y;
+  box-shadow: 0 2px 8px var(--tile-shadow);
+  transition:
+    transform 0.4s var(--spring),
+    box-shadow 0.3s;
+}
+
+.item-content img {
+  width: 100%;
+  display: block;
+  border-radius: var(--tile-r, 24px);
+  cursor: grab;
+}
+
+.moodboard-item:hover .item-content {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 18px 32px var(--shadow);
+}
+
+.moodboard-item.muuri-item-dragging .item-content {
+  transform: rotate(-2deg) scale(1.04);
+  box-shadow: 0 26px 40px var(--shadow);
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-high);
+  color: var(--accent-text);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.6);
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.35s var(--spring);
+}
+
+.remove-btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.moodboard-item:hover .remove-btn,
+.remove-btn:focus-visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .moodboard-item {
+    width: calc(33.333% - 12px);
+  }
+}
+
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  margin: 18vh 0 1rem;
+  color: var(--on-surface-variant);
+}
+
+.empty-message .empty-icon {
+  font-size: 5rem;
+  opacity: 0.5;
+}
+
+.empty-message .empty-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.empty-message .empty-sub {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.empty-upload-btn {
+  margin-top: 8px;
+  padding: 0.85rem 1.4rem;
+  min-height: 48px;
+  border-radius: 999px;
+  border: none;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    transform 0.35s var(--spring),
+    filter 0.2s;
+}
+
+.empty-upload-btn:hover {
+  filter: brightness(1.07);
+}
+
+.empty-upload-btn:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .moodboard-masonry {
+    width: calc(100% - 22px);
+    padding-inline: 0;
+  }
+
+  .moodboard-item {
+    width: calc(50% - 12px);
+  }
+
+  .empty-message {
+    margin-top: 12vh;
+  }
+}

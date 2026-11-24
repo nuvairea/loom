@@ -1,0 +1,71 @@
+:root {
+  --bg: #e2e0f9;
+  --surface-high: #f5f0ff;
+  --dock-bg: #1c1245;
+  --dock-text: #e9ddff;
+  --dock-hint: #b9a8ee;
+  --dock-divider: #3b2a7a;
+  --dock-btn: #3b2a7a;
+  --on-dock-btn: #d9cbff;
+  --cta: #e8f56a;
+  --on-cta: #1c1245;
+  --clear-bg: #ffaa98;
+  --on-clear: #4a150d;
+  --chip-active: #6b4fd8;
+  --on-chip-active: #ffffff;
+  --on-surface: #1c0259;
+  --on-surface-variant: #4b2e83cc;
+  --accent-text: #4b2e83;
+  --primary: #4b2e83;
+  --on-primary: #ffffff;
+  --primary-container: #c8b3fd;
+  --on-primary-container: #4b2e83;
+  --secondary-container: #d9cbff;
+  --on-secondary-container: #4b2e83;
+  --error-container: #ffdad6;
+  --on-error-container: #8c1d18;
+  --divider: #cdbff0;
+  --chip-bg: #d3c4f0;
+  --row-hover: #e6dcff;
+  --menu-bg: #fbf8ff;
+  --delete-text: #b3261e;
+  --shadow: rgba(75, 46, 131, 0.28);
+  --tile-shadow: rgba(75, 46, 131, 0.14);
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1d1b20;
+    --surface-high: #2b2930;
+    --dock-bg: #0f0e11;
+    --dock-text: #e6e1ea;
+    --dock-hint: #a8a3b0;
+    --dock-divider: #36343b;
+    --dock-btn: #2b2930;
+    --on-dock-btn: #e6e1ea;
+    --clear-bg: #ffb4a2;
+    --chip-active: #cfbcff;
+    --on-chip-active: #2b1760;
+    --on-surface: #e6e1ea;
+    --on-surface-variant: #cac4d0cc;
+    --accent-text: #cfbcff;
+    --primary: #cfbcff;
+    --on-primary: #2b1760;
+    --primary-container: #cfbcff;
+    --on-primary-container: #2b1760;
+    --secondary-container: #3a373f;
+    --on-secondary-container: #e6e1ea;
+    --error-container: #601410;
+    --on-error-container: #ffdad6;
+    --divider: #49454f;
+    --chip-bg: #36343b;
+    --row-hover: #36343b;
+    --menu-bg: #2f2c34;
+    --delete-text: #ffb4ab;
+    --shadow: rgba(0, 0, 0, 0.55);
+    --tile-shadow: rgba(0, 0, 0, 0.5);
+    --overlay-bg: rgba(255, 255, 255, 0.03);
+  }
+}
