@@ -55,7 +55,7 @@ body {
 #export-btn:active,
 #share-btn:active {
   --r: 16px;
-  transform: scale(0.93);
+  transform: scale(0.98);
 }
 
 .pill.icon {
