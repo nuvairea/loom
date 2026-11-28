@@ -13,6 +13,7 @@
   --on-clear: #4a150d;
   --chip-active: #6b4fd8;
   --on-chip-active: #ffffff;
+  --focus: #6b4fd8;
   --on-surface: #1c0259;
   --on-surface-variant: #4b2e83cc;
   --accent-text: #4b2e83;
@@ -48,6 +49,7 @@
     --clear-bg: #ffb4a2;
     --chip-active: #cfbcff;
     --on-chip-active: #2b1760;
+    --focus: #cfbcff;
     --on-surface: #e6e1ea;
     --on-surface-variant: #cac4d0cc;
     --accent-text: #cfbcff;
