@@ -43,14 +43,13 @@
 
 .loom-modal-btn {
   padding: 0.9rem 1.5rem;
-  border-radius: 50px;
+  --r: 50px;
+  border-radius: var(--r);
   border: none;
   font-size: 0.875rem;
   cursor: pointer;
   font-weight: 500;
-  transition:
-    transform 0.35s var(--spring),
-    filter 0.2s;
+  transition: filter 0.2s, border-radius 0.35s var(--spring), transform 0.35s var(--spring);
 }
 
 .loom-modal-btn:hover {
@@ -58,7 +57,8 @@
 }
 
 .loom-modal-btn:active {
-  transform: scale(0.95);
+  --r: 16px;
+  transform: scale(0.98);
 }
 
 .loom-modal-btn.primary {
